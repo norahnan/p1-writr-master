@@ -1,5 +1,7 @@
 package edu.mtholyoke.cs341bd.writr;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -15,6 +17,15 @@ public class WritrMessage implements Comparable<WritrMessage> {
   long timeStamp;
   /** The text the user typed in. */
   String messageText;
+  
+  //comments
+  List<Comment> comments;
+  
+  public void addComment(Comment newC)
+	{
+		comments.add(newC);
+	}
+
 
   /**
    * Create a message and init its time stamp.
