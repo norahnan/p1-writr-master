@@ -1,0 +1,39 @@
+body {
+    background-color: #057;
+}
+.body{
+    margin:40px auto;
+    max-width:600pt;
+    line-height:1.6;
+    font-size:18px;
+    padding:0 10px
+}
+h1,h2,h3{
+    line-height:1.2;
+    color: rgb(0,87,115)
+}
+a {
+    color: rgb(0,87,115)
+}
+div.form {
+    text-align: center;
+}
+div.message {
+    border: solid 1px #ccc;
+    margin: 3pt;
+    padding: 3pt;
+    background-color: #eee;
+}
+span.datetime {
+    margin-right: 10pt;
+    color: #444;
+}
+.thanks {
+    border: solid 1px #ccc;
+    margin: 3pt;
+    padding: 3pt;
+    background-color: #eee;
+}
+h1.logo {
+    color: #fff;
+}
