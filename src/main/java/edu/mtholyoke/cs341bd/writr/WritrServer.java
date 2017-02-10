@@ -71,7 +71,9 @@ public class WritrServer extends AbstractHandler {
   private void printWritrForm(PrintWriter output) {
     output.println("<div class=\"form\">");
     output.println("  <form action=\"submit\" method=\"POST\">");
-    output.println("     <input type=\"text\" name=\"message\" />");
+    output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
+
+    output.println("     <label>Message: <input type=\"text\" name=\"message\" /></label>");
     output.println("     <input type=\"submit\" value=\"Write!\" />");
     output.println("  </form>");
     output.println("</div>");
@@ -163,11 +165,13 @@ public class WritrServer extends AbstractHandler {
     // if for some reason, we have multiple "message" fields in our form, just put a space between them, see Util.join.
     // Note that message comes from the name="message" parameter in our <input> elements on our form.
     String text = Util.join(parameterMap.get("message"));
+    String user = Util.join(parameterMap.get("user"));
 
-    if(text != null) {
+
+    if(text != null && user!= null) {
       // Good, got new message from form.
       resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-      messageList.add(new WritrMessage(text));
+      messageList.add(new WritrMessage(user,text));
 
       // Respond!
       try (PrintWriter html = resp.getWriter()) {
@@ -178,7 +182,7 @@ public class WritrServer extends AbstractHandler {
         // Thank you, link.
         html.println("<div class=\"body\">");
         html.println("<div class=\"thanks\">");
-        html.println("<p>Thanks for your Submission!</p>");
+        html.println("<p>Thanks for your Submission!" + user + "</p>");
         html.println("<a href=\"front\">Back to the front page...</a> (automatically redirect in 3 seconds).");
         html.println("</div>");
         html.println("</div>");

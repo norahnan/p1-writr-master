@@ -17,6 +17,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
   long timeStamp;
   /** The text the user typed in. */
   String messageText;
+  /**testing user to identify themselves**/
+  String user;
   
   //comments
   List<Comment> comments;
@@ -31,7 +33,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * Create a message and init its time stamp.
    * @param text the text of the message.
    */
-  public WritrMessage(String text) {
+  public WritrMessage(String user, String text) {
+	  this.user = user;
     messageText = text;
     timeStamp = System.currentTimeMillis();
   }
@@ -44,6 +47,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
     output
         .append("<div class=\"message\">")
         .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
+        .append("<span class=\"user\">").append(user).append("</span>")
+
         .append(messageText)
         .append("</div>");
   }

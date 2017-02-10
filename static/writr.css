@@ -8,9 +8,14 @@ body {
     font-size:18px;
     padding:0 10px
 }
+label {
+	display: block;
+	color: #000;
+	font-weight : bold;
+}
 h1,h2,h3{
     line-height:1.2;
-    color: rgb(0,87,115)
+    color: #000;
 }
 a {
     color: rgb(0,87,115)
@@ -25,6 +30,10 @@ div.message {
     background-color: #eee;
 }
 span.datetime {
+    margin-right: 10pt;
+    color: #444;
+}
+span.user {
     margin-right: 10pt;
     color: #444;
 }
