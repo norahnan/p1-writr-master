@@ -130,12 +130,37 @@ public class WritrServer extends AbstractHandler {
 		String method = req.getMethod();
 		String path = req.getPathInfo();
 
-		//are we handling a form
+		//are we submitting a form
 		if("POST".equals(method) && "/submit".equals(path)) {
 			System.out.print(path);
 			handleForm(req, resp);
 			return;
 		}
+		
+		//are we requiring a post page
+		if()
+		{
+			getPostPage();
+		}
+		
+		
+		//are we posting a comment
+		if()
+		{
+			handleComment();
+		}
+		
+		
+		//are we getting the front page
+		if()
+		{
+			getFrontPage();
+			
+		}
+		
+		//ERROR
+		
+		
 
 		//times 2/24 -> 48
 		if("GET".equals(method)&& path.startsWith("/times2/")) {
@@ -156,6 +181,16 @@ public class WritrServer extends AbstractHandler {
 		if("GET".equals(method) && ("/front".equals(path) || "/".equals(path))){
 			showFrontPage(resp);
 		}
+	}
+
+	private void handleComment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getPostPage() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void showFrontPage(HttpServletResponse resp) throws IOException
