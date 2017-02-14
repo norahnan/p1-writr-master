@@ -140,23 +140,26 @@ public class WritrServer extends AbstractHandler {
 		//are we requiring a post page
 		if()
 		{
-			getPostPage();
+			System.out.print(path);
+			getPostPage(resp);
+			return;
 		}
 		
 		
 		//are we posting a comment
 		if()
 		{
-			handleComment();
+			System.out.print(path);
+			handleComment(req,resp);
+			return;
 		}
 		
-		
-		//are we getting the front page
-		if()
-		{
-			getFrontPage();
-			
+		//if not show front page
+		//or if front page is required
+		if("GET".equals(method) && ("/front".equals(path) || "/".equals(path))){
+			showFrontPage(resp);
 		}
+		
 		
 		//ERROR
 		
@@ -183,16 +186,86 @@ public class WritrServer extends AbstractHandler {
 		}
 	}
 
-	private void handleComment() {
+
+
+	private void handleComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Map<String, String[]> parameterMap = req.getParameterMap();
+
+		// if for some reason, we have multiple "message" fields in our form, just put a space between them, see Util.join.
+		// Note that message comes from the name="message" parameter in our <input> elements on our form.
+		String text = Util.join(parameterMap.get("message"));
+		String user = Util.join(parameterMap.get("user"));
+
+
+		if(text != null && user!= null) {
+			// Good, got new message from form.
+			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+			messageList.add(new WritrMessage(user,text));
+
+			// Respond!
+			try (PrintWriter html = resp.getWriter()) {
+				printWritrPageStart(html, "Writr: Submitted!");
+				// Print actual redirect directive:
+				html.println("<meta http-equiv=\"refresh\" content=\"3; url=front \">");
+
+				// Thank you, link.
+				html.println("<div class=\"body\">");
+				html.println("<div class=\"thanks\">");
+				html.println("<p>Thanks for your Submission!" + user + "</p>");
+				html.println("<a href=\"front\">Back to the front page...</a> (automatically redirect in 3 seconds).");
+				html.println("</div>");
+				html.println("</div>");
+
+				printWritrPageEnd(html);
+
+			} catch (IOException ignored) {
+				// Don't consider a browser that stops listening to us after submitting a form to be an error.
+			}
+
+			return;
+		}
+
+		// user submitted something weird.
+		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user.");
+	}
+
+	private void getPostPage(HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
+		
+		try (PrintWriter html = resp.getWriter()) { //try with resources
+			//remembers to call close on html even if exceptions are thrown or you forget
+			printWritrPageStart(html, "Writr");
+
+			// Print the form at the top of the page
+			printWritrForm(html);
+			// printCommentForm(html);
+
+			// Print all of our messages
+			html.println("<div class=\"body\">");
+
+			// get a copy to sort:
+			ArrayList<WritrMessage> messages = new ArrayList<>(this.messageList);
+			Collections.sort(messages);
+
+			StringBuilder messageHTML = new StringBuilder();
+			for (WritrMessage writrMessage : messages) {
+				writrMessage.appendHTML(messageHTML);
+			}
+			html.println(messageHTML);
+			html.println("</div>");
+
+			// when we have a big page,
+			if(messages.size() > 25) {
+				// Print the submission form again at the bottom of the page
+				printWritrForm(html);
+			}
+			printWritrPageEnd(html);
+		}
 		
 	}
 
-	private void getPostPage() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
+	//print the front page
 	private void showFrontPage(HttpServletResponse resp) throws IOException
 	{
 		try (PrintWriter html = resp.getWriter()) { //try with resources
