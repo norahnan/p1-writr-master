@@ -130,7 +130,7 @@ public class WritrServer extends AbstractHandler {
 		String method = req.getMethod();
 		String path = req.getPathInfo();
 
-		//are we submitting a form
+		//are we submitting a post
 		if("POST".equals(method) && "/submit".equals(path)) {
 			System.out.print(path);
 			handleForm(req, resp);
@@ -138,7 +138,7 @@ public class WritrServer extends AbstractHandler {
 		}
 		
 		//are we requiring a post page
-		if()
+		if("GET".equals(method))
 		{
 			System.out.print(path);
 			getPostPage(resp);
@@ -147,7 +147,7 @@ public class WritrServer extends AbstractHandler {
 		
 		
 		//are we posting a comment
-		if()
+		if("POST".equals(method))
 		{
 			System.out.print(path);
 			handleComment(req,resp);
@@ -201,7 +201,7 @@ public class WritrServer extends AbstractHandler {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			messageList.add(new WritrMessage(user,text));
-
+                                                               
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {
 				printWritrPageStart(html, "Writr: Submitted!");
@@ -328,7 +328,7 @@ public class WritrServer extends AbstractHandler {
 				// Thank you, link.
 				html.println("<div class=\"body\">");
 				html.println("<div class=\"thanks\">");
-				html.println("<p>Thanks for your Submission!" + user + "</p>");
+				html.println("<p>Thanks for your submission, " + user + "</p>");
 				html.println("<a href=\"front\">Back to the front page...</a> (automatically redirect in 3 seconds).");
 				html.println("</div>");
 				html.println("</div>");
