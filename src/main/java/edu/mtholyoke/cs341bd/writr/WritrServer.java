@@ -72,6 +72,7 @@ public class WritrServer extends AbstractHandler {
 		output.println("<div class=\"form\">");
 		output.println("  <form action=\"submit\" method=\"POST\">");
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
+		output.println("    <label>Title:  <input type=\"text\" name=\"title\" /></label>");
 		output.println("     <label>Msg: <input type=\"text\" name=\"message\" /></label>");
 		output.println("     <input type=\"submit\" value=\"Write!\" />");
 		output.println("  </form>");
@@ -327,9 +328,11 @@ public class WritrServer extends AbstractHandler {
 		// Note that message comes from the name="message" parameter in our <input> elements on our form.
 		String text = Util.join(parameterMap.get("message"));
 		String user = Util.join(parameterMap.get("user"));
+		String title = Util.join(parameterMap.get("title"));
 
 
-		if(text != null && user!= null) {
+
+		if(text != null && user!= null && title!=null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			messageList.add(new WritrMessage(user,text));
