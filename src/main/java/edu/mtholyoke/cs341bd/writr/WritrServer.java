@@ -113,6 +113,10 @@ public class WritrServer extends AbstractHandler {
 		html.println("</html>");
 	}
 
+	
+	public int uniqueId = 0;
+	
+	
 	/**
 	 * The main callback from Jetty.
 	 * @param resource what is the user asking for from the server?
@@ -133,15 +137,16 @@ public class WritrServer extends AbstractHandler {
 		//are we submitting a post
 		if("POST".equals(method) && "/submit".equals(path)) {
 			System.out.print(path);
+			uniqueId++;
 			handleForm(req, resp);
 			return;
 		}
 		
 		//are we requiring a post page
-		if("GET".equals(method))
+		if("GET".equals(method)&&path.startsWith("/post/"))
 		{
 			System.out.print(path);
-			getPostPage(resp);
+			getPostPage(messageList, uniqueId, resp);
 			return;
 		}
 		
@@ -202,6 +207,13 @@ public class WritrServer extends AbstractHandler {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			messageList.add(new WritrMessage(user,text));
+			
+			
+			//print the post
+			
+			//get the comment list
+			
+			//print the comment
                                                                
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {
@@ -230,7 +242,7 @@ public class WritrServer extends AbstractHandler {
 		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user.");
 	}
 
-	private void getPostPage(HttpServletResponse resp) throws IOException{
+	private void getPostPage(Vector<WritrMessage> messageList2, int uniqueId2, HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
 		
 		try (PrintWriter html = resp.getWriter()) { //try with resources
