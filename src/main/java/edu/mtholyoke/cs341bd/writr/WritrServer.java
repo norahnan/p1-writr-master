@@ -319,6 +319,9 @@ public class WritrServer extends AbstractHandler {
 			thisMess.appendHTMLWithComment(messageHTML);
 			html.println(messageHTML);
 			html.println("</div>");
+			
+			printCommentForm(html);
+			//print the enter comment field and the submit button
 
 			// when we have a big page,
 			if(messages.size() > 25) {
