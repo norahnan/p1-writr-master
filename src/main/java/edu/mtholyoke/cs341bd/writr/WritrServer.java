@@ -92,9 +92,10 @@ public class WritrServer extends AbstractHandler {
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
 		output.println("     <label>Comment: <input type=\"text\" name=\"comment\" /></label>");
 		output.println("     <input type=\"submit\" value=\"Post\" />");
-		output.println("<a href='/submitComment/>'> </a>");
 
 		output.println("  </form>");
+		output.println("<a href='/submitComment/>'> Home Page </a>");
+
 		output.println("</div>");
 	}
 	/**
