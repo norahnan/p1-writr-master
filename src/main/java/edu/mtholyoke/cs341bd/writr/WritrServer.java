@@ -145,13 +145,13 @@ public class WritrServer extends AbstractHandler {
 		//are we submitting a post
 		if("POST".equals(method) && "/submit".equals(path)) {
 			System.out.print(path);
-			uniqueId++;
+			//uniqueId++;
 			handleForm(req, resp);
 			return;
 		}
 
 		//are we requiring a post page
-		if("GET".equals(method)&&path.startsWith("/post/"))
+		if("GET".equals(method)&&path.startsWith("/msg/"))
 		{
 			System.out.print(path);
 			getPostPage(messageList, uniqueId, resp);
@@ -235,6 +235,7 @@ public class WritrServer extends AbstractHandler {
 		String user = Util.join(parameterMap.get("user"));
 		//String title = Util.join(parameterMap.get("title"));
 
+		WritrMessage  thisMess = msgMap.get(uniqueId);
 
 		if(text != null && user!= null) {
 			// Good, got new message from form.
@@ -295,9 +296,12 @@ public class WritrServer extends AbstractHandler {
 
 			//messages.get(uniqueId)
 			StringBuilder messageHTML = new StringBuilder();
-			for (WritrMessage writrMessage : messages) {
+			/*for (WritrMessage writrMessage : messages) {
 				writrMessage.appendHTML(messageHTML);
-			}
+			}*/
+			WritrMessage  thisMess = msgMap.get(uniqueId);
+			System.out.println(uniqueId);
+			thisMess.appendHTMLWithComment(messageHTML);
 			html.println(messageHTML);
 			html.println("</div>");
 
