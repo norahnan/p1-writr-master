@@ -80,11 +80,13 @@ public class WritrServer extends AbstractHandler {
 
 	/**test html function**/
 	private void printCommentForm(PrintWriter output) {
-		output.println("<div class=\"form\">");
-		output.println("  <form action=\"submit\" method=\"POST\">");
+		output.println("<div class=\"commentForm\">");
+		output.println("<form action=\"submit\" method=\"POST\">");
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
 		output.println("     <label>Comment: <input type=\"text\" name=\"comment\" /></label>");
-		output.println("     <input type=\"submit\" value=\"Write!\" />");
+		output.println("     <input type=\"submit\" value=\"Post\" />");
+		output.println("<a href='/submitComment/>'> </a>");
+
 		output.println("  </form>");
 		output.println("</div>");
 	}
