@@ -240,18 +240,18 @@ public class WritrServer extends AbstractHandler {
 		//String title = Util.join(parameterMap.get("title"));
 
 		WritrMessage  thisMess = msgMap.get(uniqueId);
+		
+		
+		//we need to add comment to the post
+		
+		//user for comments?
 
+		
 		if(text != null && user!= null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			//messageList.add(new WritrMessage(user,text,));
 
-
-			//print the post
-
-			//get the comment list
-
-			//print the comment
 
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {
@@ -282,6 +282,13 @@ public class WritrServer extends AbstractHandler {
 
 	private void getPostPage(Vector<WritrMessage> messageList2, int uniqueId2, HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
+		
+		//add href to go to the front page
+		
+		
+		//add show comments
+		
+		
 
 		try (PrintWriter html = resp.getWriter()) { //try with resources
 			//remembers to call close on html even if exceptions are thrown or you forget
