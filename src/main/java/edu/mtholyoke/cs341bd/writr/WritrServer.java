@@ -91,10 +91,12 @@ public class WritrServer extends AbstractHandler {
 		output.println("<form action=\"submit\" method=\"POST\">");
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
 		output.println("     <label>Comment: <input type=\"text\" name=\"comment\" /></label>");
-		output.println("     <input type=\"submit\" value=\"Post\" />");
+		output.println("     <input type=\"submit\" value=\"Post comment\" />");
+		//output.println("     <button type=\"submit\" value=\"Post\" button/>");
+
 
 		output.println("  </form>");
-		output.println("<a href='/submitComment/>'> Home Page </a>");
+		output.println("<a href='front\'> Home Page </a>");//"front\"
 
 		output.println("</div>");
 	}
@@ -417,6 +419,6 @@ public class WritrServer extends AbstractHandler {
 		}
 
 		// user submitted something weird.
-		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user.");
+		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user.Handle form,");
 	}
 }
