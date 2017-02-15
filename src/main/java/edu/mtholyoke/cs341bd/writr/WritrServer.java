@@ -147,7 +147,8 @@ public class WritrServer extends AbstractHandler {
 		
 		
 		//are we posting a comment
-		if("POST".equals(method))
+		//when it is a post and the path end with the user id
+		if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
 		{
 			System.out.print(path);
 			handleComment(req,resp);
