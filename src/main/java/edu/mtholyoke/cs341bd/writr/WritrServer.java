@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -26,6 +27,7 @@ public class WritrServer extends AbstractHandler {
 	Server jettyServer;
 	Vector<WritrMessage> messageList = new Vector<>();
 	public int uniqueId = -1; //to match indexes
+	private Map<Integer,WritrMessage> msgMap = new HashMap<Integer,WritrMessage>();
 
 
 	public WritrServer(String baseURL, int port) throws IOException {
@@ -64,7 +66,7 @@ public class WritrServer extends AbstractHandler {
 	public String getStaticURL(String resource) {
 		return "static/"+resource;
 	}
-	
+
 
 
 	/**
@@ -120,9 +122,9 @@ public class WritrServer extends AbstractHandler {
 		html.println("</html>");
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * The main callback from Jetty.
 	 * @param resource what is the user asking for from the server?
@@ -147,7 +149,7 @@ public class WritrServer extends AbstractHandler {
 			handleForm(req, resp);
 			return;
 		}
-		
+
 		//are we requiring a post page
 		if("GET".equals(method)&&path.startsWith("/post/"))
 		{
@@ -155,8 +157,8 @@ public class WritrServer extends AbstractHandler {
 			getPostPage(messageList, uniqueId, resp);
 			return;
 		}
-		
-		
+
+
 		//are we posting a comment
 		//when it is a post and the path end with the user id
 		if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
@@ -165,22 +167,46 @@ public class WritrServer extends AbstractHandler {
 			handleComment(req,resp);
 			return;
 		}
-		
+
 		//if not show front page
 		//or if front page is required
 		if("GET".equals(method) && ("/front".equals(path) || "/".equals(path))){
 			showFrontPage(resp);
 		}
-		
-		
-		//ERROR
-		
-		
+
+
+		//HANDLE URL FROM POST
+		if("GET".equals(method) && path.startsWith("/msg/")) {
+			uniqueId = Integer.parseInt(path.substring(5));
+
+			try (PrintWriter html = resp.getWriter()) {
+				//html.println("<html>");
+				//html.println("this is post #"+postNumber);
+
+				StringBuilder messageHTML = new StringBuilder();
+				//html.println("<div class=\"originalPost\">");
+				msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
+				html.println(messageHTML);
+				html.println("</div>");
+
+				printCommentForm(html);
+
+				//if more posts exists
+				if (msgMap.get(uniqueId+1) != null)
+					html.println("<a href='/post/"+(uniqueId+1)+"'>go to next post #"+(uniqueId +1)+"</a>");
+				//if previous posts exist
+				if (msgMap.get(uniqueId-1) != null)
+					html.println("<a href='/post/"+(uniqueId-1)+"'>go to previous post #"+(uniqueId-1)+"</a>");
+				html.println("</html>");
+			} 
+		}
+
+
 
 		//times 2/24 -> 48
 		if("GET".equals(method)&& path.startsWith("/times2/")) {
 			int number  = Integer.parseInt(path.substring(8));	
- 
+
 			try(PrintWriter html = resp.getWriter()){
 
 				html.println("<html>");
@@ -214,14 +240,14 @@ public class WritrServer extends AbstractHandler {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			//messageList.add(new WritrMessage(user,text,));
-			
-			
+
+
 			//print the post
-			
+
 			//get the comment list
-			
+
 			//print the comment
-                                                               
+
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {
 				printWritrPageStart(html, "Writr: Submitted!");
@@ -251,7 +277,7 @@ public class WritrServer extends AbstractHandler {
 
 	private void getPostPage(Vector<WritrMessage> messageList2, int uniqueId2, HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
-		
+
 		try (PrintWriter html = resp.getWriter()) { //try with resources
 			//remembers to call close on html even if exceptions are thrown or you forget
 			printWritrPageStart(html, "Writr");
@@ -282,10 +308,10 @@ public class WritrServer extends AbstractHandler {
 			}
 			printWritrPageEnd(html);
 		}
-		
+
 	}
 
-	
+
 	//print the front page
 	private void showFrontPage(HttpServletResponse resp) throws IOException
 	{
@@ -334,7 +360,7 @@ public class WritrServer extends AbstractHandler {
 		String text = Util.join(parameterMap.get("message"));
 		String user = Util.join(parameterMap.get("user"));
 		String title = Util.join(parameterMap.get("title"));
-		
+
 
 
 

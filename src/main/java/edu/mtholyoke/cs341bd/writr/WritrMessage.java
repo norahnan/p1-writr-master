@@ -50,6 +50,9 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
    * @param output a stringbuilder object, to which we'll add our HTML representation.
    */
+  
+  String link = "View post" ;
+  		
   public void appendHTML(StringBuilder output) {
    
 	  output
@@ -61,9 +64,10 @@ public class WritrMessage implements Comparable<WritrMessage> {
         .append(commentNumber)
         .append(comments.size())
         .append("<br>")
-		.append("<a href=\"post\"" ).append(Integer.toString(5)).append( ">View Post</a>")
+		//.append("<a href=\"post\ ).append(Integer.toString(id)).append( ">View Post</a>")
 
-		//.append("<a href=\"front\">View Post</a>")
+		.append("<a href='/msg/" + (id) + "'>"+(link)+ "</a>")
+	//	<a href='/post/"+(postNumber)+"'>"+title+"</a>")
         .append("</div>");
   }
   
