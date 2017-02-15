@@ -136,7 +136,7 @@ public class WritrServer extends AbstractHandler {
 	 */
 	@Override
 	public void handle(String resource, Request jettyReq, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		System.out.println(jettyReq);
+		System.out.println("this is jetty request: " + jettyReq);
 
 		//
 		String method = req.getMethod();
@@ -144,8 +144,9 @@ public class WritrServer extends AbstractHandler {
 
 		//are we submitting a post
 		if("POST".equals(method) && "/submit".equals(path)) {
-			System.out.print(path);
-			//uniqueId++;
+			System.out.print("this is path: "+path+"    ");
+			uniqueId++;
+			System.out.print("this is ID in submit post: "+uniqueId);
 			handleForm(req, resp);
 			return;
 		}
@@ -153,7 +154,7 @@ public class WritrServer extends AbstractHandler {
 		//are we requiring a post page
 		if("GET".equals(method)&&path.startsWith("/msg/"))
 		{
-			System.out.print(path);
+			System.out.print("This is path in require a post page:" + path);
 			getPostPage(messageList, uniqueId, resp);
 			return;
 		}
@@ -163,7 +164,7 @@ public class WritrServer extends AbstractHandler {
 		//when it is a post and the path end with the user id
 		if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
 		{
-			System.out.print(path);
+			System.out.print("this is path inside submit comment: " + path);
 			handleComment(req,resp);
 			return;
 		}
@@ -299,8 +300,12 @@ public class WritrServer extends AbstractHandler {
 			/*for (WritrMessage writrMessage : messages) {
 				writrMessage.appendHTML(messageHTML);
 			}*/
-			WritrMessage  thisMess = msgMap.get(uniqueId);
-			System.out.println(uniqueId);
+			WritrMessage  thisMess = messages.get(uniqueId);
+			System.out.println("This is uniquqe id in getpost:" + uniqueId);
+			
+			//msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
+			//html.println(messageHTML);
+			
 			thisMess.appendHTMLWithComment(messageHTML);
 			html.println(messageHTML);
 			html.println("</div>");
