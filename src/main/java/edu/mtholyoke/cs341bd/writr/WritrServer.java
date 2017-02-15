@@ -155,7 +155,10 @@ public class WritrServer extends AbstractHandler {
 		if("GET".equals(method)&&path.startsWith("/msg/"))
 		{
 			System.out.print("This is path in require a post page:" + path);
-			getPostPage(messageList, uniqueId, resp);
+			
+			//we should not pass in uniqueId here we need another id
+			int uniqueIdd = Integer.parseInt(path.substring(5));
+			getPostPage(messageList, uniqueIdd, resp);
 			return;
 		}
 
@@ -300,8 +303,8 @@ public class WritrServer extends AbstractHandler {
 			/*for (WritrMessage writrMessage : messages) {
 				writrMessage.appendHTML(messageHTML);
 			}*/
-			WritrMessage  thisMess = messages.get(uniqueId);
-			System.out.println("This is uniquqe id in getpost:" + uniqueId);
+			WritrMessage  thisMess = messages.get(uniqueId - uniqueId2);
+			System.out.println("This is uniquqe id in getpost:" + uniqueId2);
 			
 			//msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
 			//html.println(messageHTML);
@@ -328,6 +331,7 @@ public class WritrServer extends AbstractHandler {
 			//remembers to call close on html even if exceptions are thrown or you forget
 			printWritrPageStart(html, "Writr");
 
+			
 			// Print the form at the top of the page
 			printWritrForm(html);
 			// printCommentForm(html);
