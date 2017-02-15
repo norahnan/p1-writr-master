@@ -25,6 +25,8 @@ public class WritrServer extends AbstractHandler {
 	String metaURL;
 	Server jettyServer;
 	Vector<WritrMessage> messageList = new Vector<>();
+	public int uniqueId = -1; //to match indexes
+
 
 	public WritrServer(String baseURL, int port) throws IOException {
 		this.metaURL = "<base href=\""+baseURL+"\">";
@@ -62,6 +64,8 @@ public class WritrServer extends AbstractHandler {
 	public String getStaticURL(String resource) {
 		return "static/"+resource;
 	}
+	
+
 
 	/**
 	 * Made this a function so that we can have the submit form at the top & bottom of the page.
@@ -117,7 +121,6 @@ public class WritrServer extends AbstractHandler {
 	}
 
 	
-	public int uniqueId = 0;
 	
 	
 	/**
@@ -254,7 +257,7 @@ public class WritrServer extends AbstractHandler {
 			printWritrPageStart(html, "Writr");
 
 			// Print the form at the top of the page
-			printWritrForm(html);
+			//printWritrForm(html);
 			// printCommentForm(html);
 
 			// Print all of our messages
@@ -264,6 +267,7 @@ public class WritrServer extends AbstractHandler {
 			ArrayList<WritrMessage> messages = new ArrayList<>(this.messageList);
 			Collections.sort(messages);
 
+			//messages.get(uniqueId)
 			StringBuilder messageHTML = new StringBuilder();
 			for (WritrMessage writrMessage : messages) {
 				writrMessage.appendHTML(messageHTML);
@@ -330,13 +334,14 @@ public class WritrServer extends AbstractHandler {
 		String text = Util.join(parameterMap.get("message"));
 		String user = Util.join(parameterMap.get("user"));
 		String title = Util.join(parameterMap.get("title"));
+		
 
 
 
 		if(text != null && user!= null && title!=null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-			messageList.add(new WritrMessage(user,text,title));
+			messageList.add(new WritrMessage(user,text,title,uniqueId));
 
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {

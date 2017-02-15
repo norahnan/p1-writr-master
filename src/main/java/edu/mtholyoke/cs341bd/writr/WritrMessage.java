@@ -22,6 +22,7 @@ public class WritrMessage implements Comparable<WritrMessage> {
   String user;
   String commentNumber = "                     Comments: ";
   String title;
+  int id;
   
   //comments
   List<Comment> comments;
@@ -36,10 +37,11 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * Create a message and init its time stamp.
    * @param text the text of the message.
    */
-  public WritrMessage(String user, String text,String title) {
+  public WritrMessage(String user, String text,String title,int uniqueId) {
 	  this.user = user;
     messageText = text;
     this.title = title;
+    this.id = uniqueId;
     timeStamp = System.currentTimeMillis();
     comments = new LinkedList<Comment>();
   }
@@ -49,7 +51,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * @param output a stringbuilder object, to which we'll add our HTML representation.
    */
   public void appendHTML(StringBuilder output) {
-    output
+   
+	  output
         .append("<div class=\"message\">")
         .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
         .append("<span class=\"user\">").append(user).append("</span>")
@@ -57,6 +60,10 @@ public class WritrMessage implements Comparable<WritrMessage> {
         .append(messageText)
         .append(commentNumber)
         .append(comments.size())
+        .append("<br>")
+		.append("<a href=\"post\"" ).append(Integer.toString(5)).append( ">View Post</a>")
+
+		//.append("<a href=\"front\">View Post</a>")
         .append("</div>");
   }
   
