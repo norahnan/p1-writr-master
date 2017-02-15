@@ -204,12 +204,13 @@ public class WritrServer extends AbstractHandler {
 		// Note that message comes from the name="message" parameter in our <input> elements on our form.
 		String text = Util.join(parameterMap.get("message"));
 		String user = Util.join(parameterMap.get("user"));
+		//String title = Util.join(parameterMap.get("title"));
 
 
 		if(text != null && user!= null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-			messageList.add(new WritrMessage(user,text));
+			//messageList.add(new WritrMessage(user,text,));
 			
 			
 			//print the post
@@ -335,7 +336,7 @@ public class WritrServer extends AbstractHandler {
 		if(text != null && user!= null && title!=null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-			messageList.add(new WritrMessage(user,text));
+			messageList.add(new WritrMessage(user,text,title));
 
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {

@@ -1,5 +1,6 @@
 package edu.mtholyoke.cs341bd.writr;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -19,6 +20,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
   String messageText;
   /**testing user to identify themselves**/
   String user;
+  String commentNumber = "                     Comments: ";
+  String title;
   
   //comments
   List<Comment> comments;
@@ -33,10 +36,12 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * Create a message and init its time stamp.
    * @param text the text of the message.
    */
-  public WritrMessage(String user, String text) {
+  public WritrMessage(String user, String text,String title) {
 	  this.user = user;
     messageText = text;
+    this.title = title;
     timeStamp = System.currentTimeMillis();
+    comments = new LinkedList<Comment>();
   }
 
   /**
@@ -44,6 +49,22 @@ public class WritrMessage implements Comparable<WritrMessage> {
    * @param output a stringbuilder object, to which we'll add our HTML representation.
    */
   public void appendHTML(StringBuilder output) {
+    output
+        .append("<div class=\"message\">")
+        .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
+        .append("<span class=\"user\">").append(user).append("</span>")
+        
+        .append(messageText)
+        .append(commentNumber)
+        .append(comments.size())
+        .append("</div>");
+  }
+  
+  /**
+   * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
+   * @param output a stringbuilder object, to which we'll add our HTML representation.
+   */
+  public void appendHTMLWithComment(StringBuilder output) {
     output
         .append("<div class=\"message\">")
         .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
