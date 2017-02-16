@@ -92,12 +92,8 @@ public class WritrServer extends AbstractHandler {
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
 		output.println("     <label>Comment: <input type=\"text\" name=\"comment\" /></label>");
 		output.println("     <input type=\"submit\" value=\"Post comment\" />");
-		//output.println("     <button type=\"submit\" value=\"Post\" button/>");
-
-
 		output.println("  </form>");
 		output.println("<a href='front\'> Home Page </a>");//"front\"
-
 		output.println("</div>");
 	}
 	/**
@@ -125,9 +121,6 @@ public class WritrServer extends AbstractHandler {
 		html.println("</html>");
 	}
 
-
-
-
 	/**
 	 * The main callback from Jetty.
 	 * @param resource what is the user asking for from the server?
@@ -141,7 +134,6 @@ public class WritrServer extends AbstractHandler {
 	public void handle(String resource, Request jettyReq, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		System.out.println("this is jetty request: " + jettyReq);
 
-		//
 		String method = req.getMethod();
 		String path = req.getPathInfo();
 
@@ -158,7 +150,6 @@ public class WritrServer extends AbstractHandler {
 		if("GET".equals(method)&&path.startsWith("/msg/"))
 		{
 			System.out.print("This is path in require a post page:" + path);
-			
 			//we should not pass in uniqueId here we need another id
 			int uniqueIdd = Integer.parseInt(path.substring(5));
 			getPostPage(messageList, uniqueIdd, resp);
@@ -169,12 +160,12 @@ public class WritrServer extends AbstractHandler {
 		//are we posting a comment
 		//when it is a post and the path end with the user id
 		//if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
-	if("POST".equals(method)&& "/comment".equals(path))
+		if("POST".equals(method)&& "/comment".equals(path))
 		{
 			System.out.print("this is path inside submit comment: " + path);
 			handleComment(req,resp);
 
-		//	printCommentForm(html);
+			//	printCommentForm(html);
 			return;
 		}
 
@@ -183,7 +174,6 @@ public class WritrServer extends AbstractHandler {
 		if("GET".equals(method) && ("/front".equals(path) || "/".equals(path))){
 			showFrontPage(resp);
 		}
-
 
 		//HANDLE URL FROM POST
 		if("GET".equals(method) && path.startsWith("/msg/")) {
@@ -241,18 +231,21 @@ public class WritrServer extends AbstractHandler {
 
 		// if for some reason, we have multiple "message" fields in our form, just put a space between them, see Util.join.
 		// Note that message comes from the name="message" parameter in our <input> elements on our form.
-		String text = Util.join(parameterMap.get("message"));
+		String text = Util.join(parameterMap.get("comment"));
 		String user = Util.join(parameterMap.get("user"));
 		//String title = Util.join(parameterMap.get("title"));
 
 		//add comment to the post
-		//WritrMessage  thisMess = msgMap.get(uniqueId);
-		// msgMap.get(uniqueId).addComment(user);
-	
-		
-		//user for comments?
+	//	WritrMessage  thisMess = msgMap.get(uniqueId);
+		messageList.get(0).addComment(user);
 
-		
+		//if(thisMess.equals(null)){
+		//	System.out.println("uniqueId" + uniqueId);
+		//	System.out.println("null" );
+
+	//	}
+		//msgMap.get(uniqueId).addComment(user);
+
 		if(text != null && user!= null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
@@ -283,18 +276,18 @@ public class WritrServer extends AbstractHandler {
 		}
 
 		// user submitted something weird.
-		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user.");
+		resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad user. ffrom handle comment");
 	}
 
 	private void getPostPage(Vector<WritrMessage> messageList2, int uniqueId2, HttpServletResponse resp) throws IOException{
 		// TODO Auto-generated method stub
-		
+
 		//add href to go to the front page
-		
-		
+
+
 		//add show comments
-		
-		
+
+
 
 		try (PrintWriter html = resp.getWriter()) { //try with resources
 			//remembers to call close on html even if exceptions are thrown or you forget
@@ -318,14 +311,14 @@ public class WritrServer extends AbstractHandler {
 			}*/
 			WritrMessage  thisMess = messages.get(uniqueId - uniqueId2);
 			System.out.println("This is uniquqe id in getpost:" + uniqueId2);
-			
+
 			//msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
 			//html.println(messageHTML);
-			
+
 			thisMess.appendHTMLWithComment(messageHTML);
 			html.println(messageHTML);
 			html.println("</div>");
-			
+
 			printCommentForm(html);
 			//print the enter comment field and the submit button
 
@@ -347,7 +340,7 @@ public class WritrServer extends AbstractHandler {
 			//remembers to call close on html even if exceptions are thrown or you forget
 			printWritrPageStart(html, "Writr");
 
-			
+
 			// Print the form at the top of the page
 			printWritrForm(html);
 			// printCommentForm(html);
