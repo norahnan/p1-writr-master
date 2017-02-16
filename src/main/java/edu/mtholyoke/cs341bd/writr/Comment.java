@@ -8,7 +8,6 @@ public class Comment implements Comparable<WritrMessage> {
 	long timeStamp;
 	String user;
 	
-	
 	public Comment(String user,String inputC)
 	{
 		this.user = user;

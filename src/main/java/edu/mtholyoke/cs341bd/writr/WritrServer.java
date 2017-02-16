@@ -68,7 +68,6 @@ public class WritrServer extends AbstractHandler {
 	}
 
 
-
 	/**
 	 * Made this a function so that we can have the submit form at the top & bottom of the page.
 	 * <a href="http://www.w3schools.com/html/html_forms.asp">Tutorial about Forms</a>
@@ -96,8 +95,8 @@ public class WritrServer extends AbstractHandler {
 		output.println("<a href='front\'> Home Page </a>");//"front\"
 		output.println("</div>");
 
-	
 	}
+
 	/**
 	 * HTML top boilerplate; put in a function so that I can use it for all the pages I come up with.
 	 * @param html where to write to; get this from the HTTP response.
@@ -114,6 +113,7 @@ public class WritrServer extends AbstractHandler {
 		html.println("  <body>");
 		html.println("  <h1 class=\"logo\">Writr</h1>");
 	}
+
 	/**
 	 * HTML bottom boilerplate; close all the tags we open in printWritrPageStart.
 	 * @param html where to write to; get this from the HTTP response.
@@ -135,7 +135,6 @@ public class WritrServer extends AbstractHandler {
 	@Override
 	public void handle(String resource, Request jettyReq, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		System.out.println("this is jetty request: " + jettyReq);
-
 		String method = req.getMethod();
 		String path = req.getPathInfo();
 
@@ -158,16 +157,10 @@ public class WritrServer extends AbstractHandler {
 			return;
 		}
 
-
 		//are we posting a comment
-		//when it is a post and the path end with the user id
-		//if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
 		if("POST".equals(method)&& "/comment".equals(path))
 		{
-			System.out.print("this is path inside submit comment: " + path);
 			handleComment(req,resp);
-
-			//	printCommentForm(html);
 			return;
 		}
 
@@ -184,7 +177,6 @@ public class WritrServer extends AbstractHandler {
 			try (PrintWriter html = resp.getWriter()) {
 
 				StringBuilder messageHTML = new StringBuilder();
-				//html.println("<div class=\"originalPost\">");
 				msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
 				html.println(messageHTML);
 				html.println("</div>");
@@ -201,8 +193,6 @@ public class WritrServer extends AbstractHandler {
 			} 
 		}
 
-
-
 		//times 2/24 -> 48
 		if("GET".equals(method)&& path.startsWith("/times2/")) {
 			int number  = Integer.parseInt(path.substring(8));	
@@ -217,14 +207,11 @@ public class WritrServer extends AbstractHandler {
 			} 
 		}
 
-
 		//if not show front page
 		if("GET".equals(method) && ("/front".equals(path) || "/".equals(path))){
 			showFrontPage(resp);
 		}
 	}
-
-
 
 	private void handleComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Map<String, String[]> parameterMap = req.getParameterMap();
@@ -233,7 +220,6 @@ public class WritrServer extends AbstractHandler {
 		// Note that message comes from the name="message" parameter in our <input> elements on our form.
 		String text = Util.join(parameterMap.get("comment"));
 		String user = Util.join(parameterMap.get("user"));
-		//String title = Util.join(parameterMap.get("title"));
 
 		//add comment to the post
 		messageList.get(0).addComment(user,text);
@@ -241,8 +227,6 @@ public class WritrServer extends AbstractHandler {
 		if(text != null && user!= null) {
 			// Good, got new message from form.
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
-			//messageList.add(new WritrMessage(user,text,));
-
 
 			// Respond!
 			try (PrintWriter html = resp.getWriter()) {
@@ -277,10 +261,6 @@ public class WritrServer extends AbstractHandler {
 			//remembers to call close on html even if exceptions are thrown or you forget
 			printWritrPageStart(html, "Writr");
 
-			// Print the form at the top of the page
-			//printWritrForm(html);
-			// printCommentForm(html);
-
 			// Print all of our messages
 			html.println("<div class=\"body\">");
 
@@ -290,21 +270,13 @@ public class WritrServer extends AbstractHandler {
 
 			//messages.get(uniqueId)
 			StringBuilder messageHTML = new StringBuilder();
-			/*for (WritrMessage writrMessage : messages) {
-				writrMessage.appendHTML(messageHTML);
-			}*/
 			WritrMessage  thisMess = messages.get(uniqueId - uniqueId2);
-			System.out.println("This is uniquqe id in getpost:" + uniqueId2);
-
-			//msgMap.get(uniqueId).appendHTMLWithComment(messageHTML);
-			//html.println(messageHTML);
+			//System.out.println("This is uniquqe id in getpost:" + uniqueId2);
 
 			thisMess.appendHTMLWithComment(messageHTML);
 			html.println(messageHTML);
 			html.println("</div>");
-
 			printCommentForm(html);
-			//print the enter comment field and the submit button
 
 			// when we have a big page,
 			if(messages.size() > 25) {
@@ -316,14 +288,12 @@ public class WritrServer extends AbstractHandler {
 
 	}
 
-
 	//print the front page
 	private void showFrontPage(HttpServletResponse resp) throws IOException
 	{
 		try (PrintWriter html = resp.getWriter()) { //try with resources
 			//remembers to call close on html even if exceptions are thrown or you forget
 			printWritrPageStart(html, "Writr");
-
 
 			// Print the form at the top of the page
 			printWritrForm(html);
@@ -366,9 +336,6 @@ public class WritrServer extends AbstractHandler {
 		String text = Util.join(parameterMap.get("message"));
 		String user = Util.join(parameterMap.get("user"));
 		String title = Util.join(parameterMap.get("title"));
-
-
-
 
 		if(text != null && user!= null && title!=null) {
 			// Good, got new message from form.

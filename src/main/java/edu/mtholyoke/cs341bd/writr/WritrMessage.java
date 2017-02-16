@@ -9,94 +9,85 @@ import javax.annotation.Nonnull;
  * @author jfoley
  */
 public class WritrMessage implements Comparable<WritrMessage> {
-  /**
-   * This is the timestamp of when this message was added -- when the constructor gets called.
-   * We assume this is close enough to when the user presses the submit button for our uses.
-   *
-   * It's a long because it's the number of milliseconds since 1960... how computers tell time.
-   */
-  long timeStamp;
-  /** The text the user typed in. */
-  String messageText;
-  /**testing user to identify themselves**/
-  String user;
-  String commentNumber = "                     Comments: ";
-  String title;
-  int id;
-  
-  //comments
-  List<Comment> comments;
-  
-  
-  public void addComment(String currentUser, String newC)
+	/**
+	 * This is the timestamp of when this message was added -- when the constructor gets called.
+	 * We assume this is close enough to when the user presses the submit button for our uses.
+	 *
+	 * It's a long because it's the number of milliseconds since 1960... how computers tell time.
+	 */
+	long timeStamp;
+	/** The text the user typed in. */
+	String messageText;
+	/**testing user to identify themselves**/
+	String user;
+	String commentNumber = "                     Comments: ";
+	String title;
+	int id;
+	List<Comment> comments;
+
+	public void addComment(String currentUser, String newC)
 	{
-	  
 		comments.add(new Comment(currentUser,newC));
 	}
 
 
-  /**
-   * Create a message and init its time stamp.
-   * @param text the text of the message.
-   */
-  public WritrMessage(String user, String text,String title,int uniqueId) {
-	  this.user = user;
-    messageText = text;
-    this.title = title;
-    this.id = uniqueId;
-    timeStamp = System.currentTimeMillis();
-    comments = new LinkedList<Comment>();
-  }
+	/**
+	 * Create a message and init its time stamp.
+	 * @param text the text of the message.
+	 */
+	public WritrMessage(String user, String text,String title,int uniqueId) {
+		this.user = user;
+		this.messageText = text;
+		this.title = title;
+		this.id = uniqueId;
+		this.timeStamp = System.currentTimeMillis();
+		this.comments = new LinkedList<Comment>();
+	}
 
-  /**
-   * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
-   * @param output a stringbuilder object, to which we'll add our HTML representation.
-   */
-  
-  String link = "View post" ;
-  		
-  public void appendHTML(StringBuilder output) {
-   
-	  output
-        .append("<div class=\"message\">")
-        .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
-        .append("<span class=\"user\">").append(user).append("</span>")
-        
-        .append(messageText)
-        .append(commentNumber)
-        .append(comments.size())
-        .append("<br>")
-		//.append("<a href=\"post\ ).append(Integer.toString(id)).append( ">View Post</a>")
+	/**
+	 * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
+	 * @param output a stringbuilder object, to which we'll add our HTML representation.
+	 */
 
+
+	public void appendHTML(StringBuilder output) {
+		String link = "View post" ;
+
+		output
+		.append("<div class=\"message\">")
+		.append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
+		.append("<span class=\"user\">").append(user).append("</span>")
+		.append(messageText)
+		.append(commentNumber)
+		.append(comments.size())
+		.append("<br>")
 		.append("<a href='/msg/" + (id) + "'>"+(link)+ "</a>")
-	//	<a href='/post/"+(postNumber)+"'>"+title+"</a>")
-        .append("</div>");
-  }
-  
-  /**
-   * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
-   * @param output a stringbuilder object, to which we'll add our HTML representation.
-   */
-  public void appendHTMLWithComment(StringBuilder output) {
-    output
-        .append("<div class=\"message\">")
-        .append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
-        .append("<span class=\"user\">").append(user).append("</span>")
+		.append("</div>");
+	}
 
-        .append(messageText)
-        .append("<br>")
-        .append(comments.toString())
-        .append("</div>");
-  }
+	/**
+	 * Rather than give a PrintWriter here, we'll use a StringBuilder, so we can quickly build up a string from all of the messages at once. I mostly did this a different way just to show it.
+	 * @param output a stringbuilder object, to which we'll add our HTML representation.
+	 */
+	public void appendHTMLWithComment(StringBuilder output) {
+		output
+		.append("<div class=\"message\">")
+		.append("<span class=\"datetime\">").append(Util.dateToEST(timeStamp)).append("</span>")
+		.append("<span class=\"user\">").append(user).append("</span>")
+		.append(messageText)
+		.append("<br>")
+		.append(comments.toString())
+		.append("</div>");
+	}
 
-  /**
-   * Sort newer messages to top by default. Maybe someday we'll sort in other ways.
-   *
-   * @param o the other message to compare to.
-   * @return comparator of (this, o).
-   */
-  @Override
-  public int compareTo(@Nonnull WritrMessage o) {
-    return -Long.compare(timeStamp, o.timeStamp);
-  }
+	/**
+	 * Sort newer messages to top by default. Maybe someday we'll sort in other ways.
+	 *
+	 * @param o the other message to compare to.
+	 * @return comparator of (this, o).
+	 */
+	@Override
+	public int compareTo(@Nonnull WritrMessage o) {
+		return -Long.compare(timeStamp, o.timeStamp);
+	}
 }
