@@ -95,6 +95,8 @@ public class WritrServer extends AbstractHandler {
 		output.println("  </form>");
 		output.println("<a href='front\'> Home Page </a>");//"front\"
 		output.println("</div>");
+
+	
 	}
 	/**
 	 * HTML top boilerplate; put in a function so that I can use it for all the pages I come up with.
@@ -180,8 +182,6 @@ public class WritrServer extends AbstractHandler {
 			uniqueId = Integer.parseInt(path.substring(5));
 
 			try (PrintWriter html = resp.getWriter()) {
-				//html.println("<html>");
-				//html.println("this is post #"+postNumber);
 
 				StringBuilder messageHTML = new StringBuilder();
 				//html.println("<div class=\"originalPost\">");
@@ -236,15 +236,7 @@ public class WritrServer extends AbstractHandler {
 		//String title = Util.join(parameterMap.get("title"));
 
 		//add comment to the post
-	//	WritrMessage  thisMess = msgMap.get(uniqueId);
-		messageList.get(0).addComment(user);
-
-		//if(thisMess.equals(null)){
-		//	System.out.println("uniqueId" + uniqueId);
-		//	System.out.println("null" );
-
-	//	}
-		//msgMap.get(uniqueId).addComment(user);
+		messageList.get(0).addComment(user,text);
 
 		if(text != null && user!= null) {
 			// Good, got new message from form.
@@ -280,14 +272,6 @@ public class WritrServer extends AbstractHandler {
 	}
 
 	private void getPostPage(Vector<WritrMessage> messageList2, int uniqueId2, HttpServletResponse resp) throws IOException{
-		// TODO Auto-generated method stub
-
-		//add href to go to the front page
-
-
-		//add show comments
-
-
 
 		try (PrintWriter html = resp.getWriter()) { //try with resources
 			//remembers to call close on html even if exceptions are thrown or you forget

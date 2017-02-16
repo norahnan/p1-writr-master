@@ -28,10 +28,10 @@ public class WritrMessage implements Comparable<WritrMessage> {
   List<Comment> comments;
   
   
-  public void addComment(String newC)
+  public void addComment(String currentUser, String newC)
 	{
 	  
-		comments.add(new Comment(newC));
+		comments.add(new Comment(currentUser,newC));
 	}
 
 
@@ -84,6 +84,8 @@ public class WritrMessage implements Comparable<WritrMessage> {
         .append("<span class=\"user\">").append(user).append("</span>")
 
         .append(messageText)
+        .append("<br>")
+        .append(comments.toString())
         .append("</div>");
   }
 

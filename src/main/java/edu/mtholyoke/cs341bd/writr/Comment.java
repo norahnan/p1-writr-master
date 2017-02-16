@@ -6,10 +6,12 @@ public class Comment implements Comparable<WritrMessage> {
 	
 	String content;
 	long timeStamp;
+	String user;
 	
 	
-	public Comment(String inputC)
+	public Comment(String user,String inputC)
 	{
+		this.user = user;
 		content = inputC;
 		timeStamp = System.currentTimeMillis();
 	}
@@ -36,6 +38,13 @@ public class Comment implements Comparable<WritrMessage> {
 	  @Override
 	  public int compareTo(@Nonnull WritrMessage o) {
 	    return -Long.compare(timeStamp, o.timeStamp);
+	  }
+	  
+	  @Override
+	  public String toString(){
+		  String c = user + " :" + content ;
+		return c;
+		  
 	  }
 	
 	
