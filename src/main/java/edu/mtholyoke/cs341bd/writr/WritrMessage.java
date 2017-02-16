@@ -27,9 +27,11 @@ public class WritrMessage implements Comparable<WritrMessage> {
   //comments
   List<Comment> comments;
   
-  public void addComment(Comment newC)
+  
+  public void addComment(String newC)
 	{
-		comments.add(newC);
+	  
+		comments.add(new Comment(newC));
 	}
 
 

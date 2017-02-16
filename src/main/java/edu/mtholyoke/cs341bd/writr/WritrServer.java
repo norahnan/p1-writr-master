@@ -88,7 +88,7 @@ public class WritrServer extends AbstractHandler {
 	/**test html function**/
 	private void printCommentForm(PrintWriter output) {
 		output.println("<div class=\"commentForm\">");
-		output.println("<form action=\"submit\" method=\"POST\">");
+		output.println("<form action=\"comment\" method=\"POST\">");
 		output.println("    <label>User:  <input type=\"text\" name=\"user\" /></label>");
 		output.println("     <label>Comment: <input type=\"text\" name=\"comment\" /></label>");
 		output.println("     <input type=\"submit\" value=\"Post comment\" />");
@@ -168,10 +168,13 @@ public class WritrServer extends AbstractHandler {
 
 		//are we posting a comment
 		//when it is a post and the path end with the user id
-		if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
+		//if("POST".equals(method)&& "/submit".equals(path)&&path.endsWith("/times2/"))
+	if("POST".equals(method)&& "/comment".equals(path))
 		{
 			System.out.print("this is path inside submit comment: " + path);
 			handleComment(req,resp);
+
+		//	printCommentForm(html);
 			return;
 		}
 
@@ -242,10 +245,10 @@ public class WritrServer extends AbstractHandler {
 		String user = Util.join(parameterMap.get("user"));
 		//String title = Util.join(parameterMap.get("title"));
 
-		WritrMessage  thisMess = msgMap.get(uniqueId);
-		
-		
-		//we need to add comment to the post
+		//add comment to the post
+		//WritrMessage  thisMess = msgMap.get(uniqueId);
+		// msgMap.get(uniqueId).addComment(user);
+	
 		
 		//user for comments?
 
